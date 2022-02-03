@@ -1,4 +1,4 @@
-﻿#include<iostream>
+#include<iostream>
 #include<graphics.h>
 #include<conio.h>
 #include<windows.h>
@@ -25,7 +25,7 @@ class CMESSAGES
 {
 public:
 	int event;
-	int pos_i, pos_j,pos_k;
+	int pos_i, pos_j, pos_k;
 }messages;
 
 
@@ -49,7 +49,7 @@ PCPARAM_DWTXT pparam_dwtxt = &param_dwtxt;
 
 
 
-void MsgUpdater(PCMSG0 PCMsg, int event, int pos_i, int pos_j,int pos_k)
+void MsgUpdater(PCMSG0 PCMsg, int event, int pos_i, int pos_j, int pos_k)
 {
 	PCMsg->event = event;
 	PCMsg->pos_i = pos_i;
@@ -57,10 +57,10 @@ void MsgUpdater(PCMSG0 PCMsg, int event, int pos_i, int pos_j,int pos_k)
 	PCMsg->pos_k = pos_k;
 }
 
-void getboolstr(PTCHAR boolstr,bool n)
+void getboolstr(PTCHAR boolstr, bool n)
 {
-	if (n) _stprintf_s(boolstr,6,_T("true"));
-	else _stprintf_s(boolstr,6, _T("false"));
+	if (n) _stprintf_s(boolstr, 6, _T("true"));
+	else _stprintf_s(boolstr, 6, _T("false"));
 }
 
 
@@ -91,10 +91,10 @@ void DrawTxt(PCPARAM_DWTXT param)
 		_stprintf_s(s_t_asgn3, 20, _T("arr[%d] = arr[%d]"), param->PCMsg->pos_k + 1, param->PCMsg->pos_k);
 		outtextxy(10, 10, s_i);
 		outtextxy(10, 40, s_j);
-		
+
 		if (param->PCMsg->event == SEARCHING)
 		{
-			
+
 			if (param->arr[param->PCMsg->pos_j] < param->arr[param->PCMsg->pos_i])
 			{
 				settextcolor(RGB(244, 121, 131));
@@ -127,19 +127,19 @@ void DrawTxt(PCPARAM_DWTXT param)
 void sort_anim(PCPARAM_SORT param)
 {
 	int i, j, k, t;
-	
+
 	for (i = 1; i < param->l; i++)
 	{
-		
-		MsgUpdater(param->PCMsg, WAITING_FOR_SORTING, i, -1,-1); //更新事件:a[i]待排
+
+		MsgUpdater(param->PCMsg, WAITING_FOR_SORTING, i, -1, -1); //更新事件:a[i]待排
 		Sleep(1000);
 		for (j = i - 1; j >= 0; j--)
 		{
-			MsgUpdater(param->PCMsg, SEARCHING, i, j,-1); //更新事件:a[i]待排,搜索到a[j] 
+			MsgUpdater(param->PCMsg, SEARCHING, i, j, -1); //更新事件:a[i]待排,搜索到a[j] 
 			Sleep(1000);
-			if (param->a[j] < param->a[i]) 
+			if (param->a[j] < param->a[i])
 			{
-				MsgUpdater(param->PCMsg, BREAK, i, j,-1);
+				MsgUpdater(param->PCMsg, BREAK, i, j, -1);
 				//Sleep(1000);
 				break;
 			}
@@ -155,15 +155,15 @@ void sort_anim(PCPARAM_SORT param)
 			}
 			for (k = i - 1; k > j; k--)
 			{
-				MsgUpdater(param->PCMsg, EXCHANGING, i, j, k);	
+				MsgUpdater(param->PCMsg, EXCHANGING, i, j, k);
 				while (param->PCMsg->event != DONE)
 				{
 					Sleep(10);
 				}
 				param->a[k + 1] = param->a[k];
-				Sleep(1000); 
+				Sleep(1000);
 			}
-			MsgUpdater(param->PCMsg, DONESW, i, j, k+1);
+			MsgUpdater(param->PCMsg, DONESW, i, j, k + 1);
 
 			while (param->PCMsg->event != DONE)
 			{
@@ -182,11 +182,11 @@ void sort_anim(PCPARAM_SORT param)
 
 
 
-void RectRedraw(float arr[], int num,float rect_width,float left_x,float bottom_y,float interval, PCMSG0 PMsg)
+void RectRedraw(float arr[], int num, float rect_width, float left_x, float bottom_y, float interval, PCMSG0 PMsg)
 {
 	BeginBatchDraw();
 	int i;
-	setfillcolor(RGB(247,238,214)); //柱子填充:米黄色
+	setfillcolor(RGB(247, 238, 214)); //柱子填充:米黄色
 	float rect_height;
 	static int t;
 	static float  k_1_rect_height;
@@ -194,14 +194,14 @@ void RectRedraw(float arr[], int num,float rect_width,float left_x,float bottom_
 	static bool flag_tmptransporting = false;
 	static double dx = 0;
 	static int cnt = 0;
-	static float t_left_x=0, t_rect_height, t_bottom_y;
+	static float t_left_x = 0, t_rect_height, t_bottom_y;
 	const float leftx = left_x;
 	TCHAR ArrIndex[10];
 	TCHAR tmp[5];
 	_stprintf_s(tmp, 5, _T("tmp"));
 	for (i = 0; i < num; i++)
 	{
-		_stprintf_s(ArrIndex,10, _T("[%d]"), i);
+		_stprintf_s(ArrIndex, 10, _T("[%d]"), i);
 		rect_height = 15 * arr[i];  //计算当前柱子对应高度
 		switch (PMsg->event)  //事件处理
 		{
@@ -283,14 +283,14 @@ void RectRedraw(float arr[], int num,float rect_width,float left_x,float bottom_
 				solidrectangle(left_x, bottom_y - rect_height, left_x + rect_width, bottom_y);
 				setfillcolor(RGB(247, 238, 214)); //恢复米黄色
 			}
-			else 
+			else
 			{
 				setfillcolor(RGB(230, 230, 250));  //淡紫色
 				solidrectangle(t_left_x, bottom_y - t_rect_height, t_left_x + rect_width, bottom_y);
 				setfillcolor(RGB(247, 238, 214)); //恢复米黄色
 				solidrectangle(left_x, bottom_y - rect_height, left_x + rect_width, bottom_y);
 			}
-			
+
 			break;
 		}
 		case EXCHANGING:
@@ -342,7 +342,7 @@ void RectRedraw(float arr[], int num,float rect_width,float left_x,float bottom_
 			{
 				setfillcolor(RGB(247, 238, 214)); //恢复米黄色
 				solidrectangle(left_x, bottom_y - rect_height, left_x + rect_width, bottom_y);
-			}	
+			}
 			break;
 		}
 
@@ -379,7 +379,7 @@ void RectRedraw(float arr[], int num,float rect_width,float left_x,float bottom_
 			}
 			else
 			{
-				dx = ((11 - PMsg->pos_k) * interval )/ 27000.0;
+				dx = ((11 - PMsg->pos_k) * interval) / 27000.0;
 				flag_moving = true;
 			}
 
@@ -388,7 +388,7 @@ void RectRedraw(float arr[], int num,float rect_width,float left_x,float bottom_
 				flag_moving = false;
 				cnt = 0;
 				dx = 0;
-				PMsg->event=DONE;
+				PMsg->event = DONE;
 			}
 
 			if (i == PMsg->pos_i) //若a[i]为待排元素
@@ -430,19 +430,19 @@ void RectRedraw(float arr[], int num,float rect_width,float left_x,float bottom_
 
 		settextcolor(RGB(255, 255, 255));
 		outtextxy(left_x, bottom_y + 10, ArrIndex);
-		outtextxy(leftx+interval*11, bottom_y + 10, tmp);
+		outtextxy(leftx + interval * 11, bottom_y + 10, tmp);
 		left_x += interval; //更新柱子左x坐标
 	}
 
 	FlushBatchDraw();
-	
 
-	
+
+
 }
 
 int main()
 {
-	
+
 	float arr[10] = { 15,21,23,12,22,14,10,11,5,7 };
 	float width, height;
 	width = 800;
@@ -450,23 +450,28 @@ int main()
 	int l = sizeof(arr) / sizeof(float);
 	initgraph(width, height, 0);
 	setcolor(RGB(247, 238, 214));
-	messages={ -1,-1,-1 };
+	messages = { -1,-1,-1 };
 	PCMSG0 PMsg = &messages;
 	MsgUpdater(PMsg, -1, -1, -1, -1);
 	param_sort = { arr,l,PMsg };
 	param_dwtxt = { arr,PMsg };
-	HANDLE Thread_sort=CreateThread(NULL,0,(LPTHREAD_START_ROUTINE)sort_anim,pparam_sort,0,NULL);
-	HANDLE Thread_dwtxt = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)DrawTxt, pparam_dwtxt, 0, NULL);
-	while (1)
+	bool flag_ok = 0;
+	HANDLE Thread_sort = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)sort_anim, pparam_sort, 0, NULL);
+	HANDLE Thread_drawtxt = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)DrawTxt, pparam_dwtxt, 0, NULL);
+	if (Thread_sort && Thread_drawtxt)
+		flag_ok = 1;
+	else return 1;
+	while (flag_ok)
 	{
 		cleardevice();
 		RectRedraw(arr, l, 20, 40, 560, 40, PMsg);
-		if (PMsg->event==EXIT) break;
-	};
-	
+		if (PMsg->event == EXIT) break;
+	}
+	CloseHandle(Thread_sort);
+	CloseHandle(Thread_drawtxt);
 	closegraph();
 	return 0;
 
-    
+
 }
 
